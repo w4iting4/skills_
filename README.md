@@ -33,6 +33,36 @@ cp review/review-en.md your-project/.claude/commands/review.md
 /review all             # 审查整个项目
 ```
 
+### handoff — 会话交接 / pre-clear 简报
+
+在 `/clear` 之前用此 skill。引导 Claude 把本次会话精炼成"下次 1 分钟可上手"的简报，写进项目 `CLAUDE.md` 的"快速恢复"章节，必要时也改 `README.md`，然后 commit + push。强调精炼判断而非机械 dump（hook 自动化只能 append git log，做不出有判断力的总结）。
+
+| 版本 | 文件 | 说明 |
+|------|------|------|
+| 中文 | `handoff/handoff-zh.md` | 提示词和输出均为中文 |
+| English | `handoff/handoff-en.md` | 全英文版本 |
+
+#### 安装
+
+```bash
+mkdir -p your-project/.claude/commands
+
+# 中文版
+cp handoff/handoff-zh.md your-project/.claude/commands/handoff.md
+
+# 或英文版
+cp handoff/handoff-en.md your-project/.claude/commands/handoff.md
+```
+
+#### 使用
+
+```
+/handoff                       # 自动推断主题
+/handoff "shred fix + 风控接入"  # 显式给主题（写进 commit message）
+```
+
+跑完后敲 `/clear` 即可，下次开局看 `CLAUDE.md` 的"快速恢复"段秒速恢复上下文。
+
 ### mermaid-verify — Mermaid 图表质量守门员
 
 检查 mermaid 源码能否在 mermaid.live 稳定渲染，自动修复常见陷阱（subgraph alias / HTML entity / 引号嵌套 / 行尾空格 / 替换字符等），并用本地 jsdom + mermaid.parse() + mermaid.render() 双重验证。
